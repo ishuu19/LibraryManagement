@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>Online Library
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+
+    <header class="header">
+        <%- include('navbar') %>
+    </header>
+    <div class="container">
+        <div class="row mt-4 border-black border-2 rounded-3 p-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h1 class="display-4 text-primary mb-2">All Books</h1>
+                        <p class="lead text-muted">Discover and manage your favorite books</p>
+                    </div>
+                    <div>
+                        <a href="/book/add" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus"></i> Add New Book
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <% if (books && books.length> 0) { %>
+            <% books.forEach((book, index)=> { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="/book/detail/<%= book._id %>" class="text-decoration-none">
+                        <img class="card-img-top" src="<%= book.coverImage || 'https://shorturl.at/y1vem' %>"
+                            alt="<%= book.title %>" style="height: 300px; object-fit: cover;" />
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= book.title %>
+                            </h5>
+                            <p class="card-text">
+                                <%= book.description || 'No description available' %>
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div
+                                class="d-flex justify-content-between align-items-center bg-secondary-subtle text-muted p-2 rounded shadow-sm w-75">
+                                <div class="card-footer mb-0 border-0 bg-transparent" style="margin-left: 10px;">
+                                    <small>
+                                        Last updated:
+                                        <%= book.updatedAt ? Math.floor((Date.now() - book.updatedAt) / (1000 * 60 * 60
+                                            * 24)) : 'Unknown' %>
+                                            days ago
+                                    </small>
+                                </div>
+                                <a href="/book/edit/<%= book._id %>" class="btn btn-primary btn-md px-4 py-2 ms-2">
+                                    Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+                    <% } %>
+    </div>
+
+    <nav aria-label="Page navigation example" style="margin-top: 2rem;">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <%= page === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="/books?page=<%= Math.max(1, page - 1) %>&limit=<%= limit %>">Previous</a>
+            </li>
+            <% const maxVisiblePages=7; let startPage=Math.max(1, page - Math.floor(maxVisiblePages / 2)); let
+                endPage=Math.min(totalPages, startPage + maxVisiblePages - 1); if (endPage - startPage + 1 <
+                maxVisiblePages) { startPage=Math.max(1, endPage - maxVisiblePages + 1); } %>
+                <% if (startPage> 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/books?page=1&limit=<%= limit %>">1</a>
+                    </li>
+                    <% if (startPage> 2) { %>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        <% } %>
+                    <% } %>
+
+                    <% for (let i=startPage; i <=endPage; i++) { %>
+                        <li class="page-item <%= page === i ? 'active' : '' %>">
+                            <a class="page-link" href="/books?page=<%= i %>&limit=<%= limit %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                    <% } %>
+
+                    <% if (endPage < totalPages) { %>
+                        <% if (endPage < totalPages - 1) { %>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                            <% } %>
+                            <li class="page-item">
+                                <a class="page-link"
+                                href="/books?page=<%= totalPages %>&limit=<%= limit %>">
+                                <%= totalPages %>
+                                </a>
+                            </li>
+                            <% } %>
+                                <li
+                                    class="page-item <%= page === totalPages ? 'disabled' : '' %>">
+                                    <a class="page-link"
+                                    href="/books?page=<%= Math.min(totalPages, page + 1) %>&limit=<%= limit %>">Next</a>
+                                </li>
+        </ul>
+    </nav>
+</body>
+
+</html>

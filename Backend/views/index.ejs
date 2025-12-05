@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <title>
+    <%= title %>Online Library
+  </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+
+  <body>
+
+
+  <header class="header">
+    <%- include('navbar') %>
+  </header>
+
+
+  <div id="carouselExampleIndicators" class="carousel slide mt-4" data-ride="carousel" style="height: 60vh;">
+    <div class="carousel-inner">
+      <% if (highlightedBooks && highlightedBooks.length> 0) { %>
+        <% highlightedBooks.slice(0, 3).forEach((book, index)=> { %>
+          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <a href="/book/detail/<%= book._id %>" class="text-decoration-none">
+            <img class="d-block w-100" src="<%= book.coverImage || 'https://shorturl.at/y1vem' %>"
+              alt="<%= book.title %>" style="height: 60vh; object-fit: cover;">
+            </a>
+            <div class="carousel-caption d-none d-md-block" style="
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              background: linear-gradient(transparent, rgba(0,0,0,0.7));
+              backdrop-filter: blur(5px);
+              -webkit-backdrop-filter: blur(5px);
+              padding: 2rem;
+              margin: 0;
+              width: 100%;
+            ">
+              <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin-bottom: 0.5rem;">
+                <%= book.title %>
+              </h2>
+              <p style="color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); margin: 0;"><%= book.author %></p>
+            </div>
+          </div>
+          <% }); 
+          %>
+        <% } else { 
+              %>
+              <div class="carousel-item active">
+                <a href="/book/detail/<%= book._id %>" class="text-decoration-none">
+                  <img class="d-block w-100" src="https://shorturl.at/y1vem" alt="Welcome"
+                    style="height: 60vh; object-fit: cover;">
+                </a>
+                <div class="carousel-caption d-none d-md-block" style="
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+                  backdrop-filter: blur(10px);
+                  -webkit-backdrop-filter: blur(10px);
+                  padding: 2rem;
+                  margin: 0;
+                  width: 100%;
+                ">
+                  <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); margin: 0;">Stay Tuned for New Books!</h2>
+                </div>
+              </div>
+            <% }  
+            %>
+    </div>
+
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+
+
+  <nav class="booksNav mt-4">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#newBooks" data-toggle="tab" onclick="showTab('newBooks', this)">New</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#trendingBooks" data-toggle="tab"
+          onclick="showTab('trendingBooks', this)">Trending</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#hotBooks" data-toggle="tab" onclick="showTab('hotBooks', this)">Hot</a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <div id="newBooks" class="tab-content mt-4">
+    <% if (newBooks && newBooks.length> 0) { %>
+      <% newBooks.forEach((book, index)=> { %>
+        <div class="card flex-row flex-wrap mb-3">
+          <div class="card-header border-0">
+            <a href="/book/detail/<%= book._id %>" class="text-decoration-none">
+            <img src="<%= book.coverImage || 'https://shorturl.at/y1vem' %>" alt="<%= book.title %>" class="img-fluid"
+              style="width: 64px; height: 64px; object-fit: cover;" />
+            </a>
+          </div>
+          <div class="card-block px-2">
+            <h4 class="card-title">
+              <%= book.title %>
+            </h4>
+            <p class="card-text"><strong>Author:</strong>
+              <%= book.author %>
+            </p>
+            <p class="card-text"><strong>Category:</strong>
+              <%= book.category %>
+            </p>
+          </div>
+        </div>
+        <% }); %>
+          <% } else { %>
+            <div class="alert alert-info">No new books available</div>
+            <% } %>
+  </div>
+
+
+  <div id="trendingBooks" class="tab-content mt-4" style="display: none;">
+    <% if (trending6 && trending6.length> 0) { %>
+      <% trending6.forEach((book, index)=> { %>
+        <div class="card flex-row flex-wrap mb-3">
+          <div class="card-header border-0">
+            <a href="/book/detail/<%= book._id %>" class="text-decoration-none">
+            <img src="<%= book.coverImage || 'https://shorturl.at/y1vem' %>" alt="<%= book.title %>" class="img-fluid"
+              style="width: 64px; height: 64px; object-fit: cover;" />
+            </a>
+          </div>
+          <div class="card-block px-2">
+            <h4 class="card-title">
+              <%= book.title %>
+            </h4>
+            <p class="card-text"><strong>Author:</strong>
+              <%= book.author %>
+            </p>
+            <p class="card-text"><strong>Category:</strong>
+              <%= book.category %>
+            </p>
+          </div>
+        </div>
+        <% }); %>
+          <% } else { %>
+            <div class="alert alert-info">No trending books available</div>
+            <% } %>
+  </div>
+
+
+  <div id="hotBooks" class="tab-content mt-4" style="display: none;">
+    <% if (hot6 && hot6.length> 0) { %>
+      <% hot6.forEach((book, index)=> { %>
+        <div class="card flex-row flex-wrap mb-3">
+          <div class="card-header border-0">
+            <a href="/book/detail/<%= book._id %>" class="text-decoration-none">
+            <img src="<%= book.coverImage || 'https://shorturl.at/y1vem' %>" alt="<%= book.title %>" class="img-fluid"
+              style="width: 64px; height: 64px; object-fit: cover;" />
+            </a>
+          </div>
+          <div class="card-block px-2">
+            <h4 class="card-title">
+              <%= book.title %>
+            </h4>
+            <p class="card-text"><strong>Author:</strong>
+              <%= book.author %>
+            </p>
+            <p class="card-text"><strong>Category:</strong>
+              <%= book.category %>
+            </p>
+          </div>
+        </div>
+        <% }); %>
+          <% } else { %>
+            <div class="alert alert-info">No hot books available</div>
+            <% } %>
+  </div>
+
+  </div>
+
+
+  <script>
+    function showTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+
+      document.getElementById(tabId).style.display = 'block';
+      element.classList.add('active');
+    }
+  </script>
+  </body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+    "watch": [
+      "routes/",
+      "controllers/",
+      "views/",
+      "public/",
+      "utils/",
+      "middleware/",
+      "app.js",
+      "bin/"
+    ],
+    "ext": "js,json,ejs,css,html,scss",
+    "ignore": [
+      "node_modules/",
+      "*.log",
+      "*.tmp",
+      ".git/",
+      "coverage/",
+      "dist/"
+    ],
+    "delay": 1000,
+    "env": {
+      "NODE_ENV": "development",
+      "PORT": "3000"
+    },
+    "legacyWatch": true,
+    "verbose": true,
+    "restartable": "rs",
+    "colours": true
+  }
